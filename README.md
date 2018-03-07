@@ -27,7 +27,11 @@ mkdir -p /mnt/sda1/export/
 
 2. While running the container;
 
-docker run -m 10G -v /mnt/sda1/export:/export -ti dolphinnext-docker /bin/bash
+docker run -m 10G -p 8080:80 -v /mnt/sda1/export:/export -ti dolphinnext-docker /bin/bash
+
+*if you want to run a pre-build
+
+docker run -m 10G -p 8080:80 -v /mnt/sda1/export:/export -ti nephantes/dolphinnext-docker /bin/bash
 
 3. After you start the container, you need to start the mysql and apache server usign the command below;
 
