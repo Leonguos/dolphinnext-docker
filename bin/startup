@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /etc/apache2/envvars
+# If /export/ is mounted, export_user_files file moving all data to /export/
+# symlinks will point from the original location to the new path under /export/
+# If /export/ is not given, nothing will happen in that step
+python /usr/local/bin/export_user_files.py 
+
+mkdir -p /export/.dolphinnext
+chown ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /export/.dolphinnext
+printf "[Dolphinnext]\nDB=biocorepipe\nDBUSER=root\nDBPASS=\nDBHOST=localhost\nDBPORT=3306\nSSHPATH=/export/.dolphinnext/.ssh\nAMAZON=z76fg0iua298gh4\nAMZPATH=/export/.dolphinnext/.amz" > /var/www/html/biocorepipe/config/.sec
+
+find /var/lib/mysql -type f -exec touch {} \; && service mysql start 
+# start Apache in Foreground, that is needed for Docker
+apache2 -D FOREGROUND & 
