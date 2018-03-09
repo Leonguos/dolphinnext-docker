@@ -12,7 +12,5 @@ mysql -uroot -e "SET PASSWORD FOR 'debian-sys-maint'@'localhost'  = PASSWORD('"$
 pass="$(grep dbpass /etc/phpmyadmin/config-db.php | sort -u | awk '{split($1,a,"\x27");print a[2];}')"
 mysql -uroot -e "SET PASSWORD FOR 'phpmyadmin'@'localhost'  = PASSWORD('"${pass}"');"
 
-zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -u docker -pdocker biocore
-
 service mysql stop
 
