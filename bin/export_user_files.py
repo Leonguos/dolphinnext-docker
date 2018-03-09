@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 
-MYSQL_CONF = '/etc/mysql/my.cnf'
+MYSQL_CONF = '/etc/mysql/mysql.conf.d/mysqld.cnf'
 MYSQL_DATA_DIR_DEFAULT = "/var/lib/mysql"
 MYSQL_DATA_DIR_HOST = "/export/mysql/"
 
