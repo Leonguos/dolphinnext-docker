@@ -43,6 +43,7 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/fqdn.conf
+RUN a2enconf fqdn
 
 # Install phpMyAdmin
 
@@ -65,7 +66,8 @@ RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/biocorepipe
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
     mysql -u root -e 'CREATE DATABASE biocorepipe;' && \
-    cat /var/www/html/biocorepipe/db/biocorepipe.sql|mysql -uroot biocorepipe
+    cat /var/www/html/biocorepipe/db/biocorepipe.sql|mysql -uroot biocorepipe && \
+    cd /var/www/html/biocorepipe/db && ./runUpdate biocorepipe
 
 RUN apt-get -y autoremove
 
