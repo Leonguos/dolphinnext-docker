@@ -122,6 +122,6 @@ ENV PATH /opt/conda/bin:$PATH
 RUN conda update -n base conda
 
 RUN conda config --add channels bioconda
-RUN conda install -y -c bioconda tophat2
+RUN conda install -y -c bioconda tophat
 
 
