@@ -24,6 +24,7 @@ RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get -y install php7.2 
 RUN apt-get -y install php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
+RUN apt-get install -y ssh openssh-server
 
 # Enable apache mods.
 RUN a2enmod rewrite
@@ -45,8 +46,11 @@ ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 RUN echo "ServerName localhost" | tee /etc/apache2/conf-available/fqdn.conf
 RUN a2enconf fqdn
 
-# Install phpMyAdmin
+RUN echo "locale-gen en_US.UTF-8"
+RUN echo "dpkg-reconfigure locales"
 
+# Install phpMyAdmin
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     service apache2 start && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin && \ 
@@ -71,8 +75,6 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
 
 RUN apt-get -y autoremove
 
-RUN echo "locale-gen en_US.UTF-8"
-RUN echo "dpkg-reconfigure locales"
 
 # Install Java.
 RUN \
@@ -91,3 +93,34 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN curl -s https://get.nextflow.io | bash 
 RUN mv /data/nextflow /usr/bin/.
+RUN chmod 755 /usr/bin/nextflow
+                     
+RUN wget https://phar.phpunit.de/phpunit-5.6.0.phar
+RUN chmod +x phpunit-5.6.0.phar
+RUN mv phpunit-5.6.0.phar /usr/local/bin/phpunit
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+RUN apt-get update --fix-missing && apt-get install -y  bzip2 ca-certificates \
+    libglib2.0-0 libxext6 libsm6 libxrender1 \
+    git mercurial subversion
+
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+    wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.4.10-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh
+
+RUN apt-get install -y curl grep sed dpkg && \
+    TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
+    curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
+    dpkg -i tini.deb && \
+    rm tini.deb && \
+    apt-get clean
+
+ENV PATH /opt/conda/bin:$PATH
+
+RUN conda update -n base conda
+
+RUN conda install -y -c bioconda bowtie2 samtools
+
+
