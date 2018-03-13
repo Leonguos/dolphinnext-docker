@@ -49,17 +49,6 @@ RUN a2enconf fqdn
 RUN echo "locale-gen en_US.UTF-8"
 RUN echo "dpkg-reconfigure locales"
 
-# Install phpMyAdmin
-RUN LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
-    find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
-    service apache2 start && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin && \ 
-    zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -uroot
-
-RUN usermod -d /var/lib/mysql/ mysql
-
-RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php 
-RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf
  
 # Copy site into place.
 ENV GITUSER=UMMS-Biocore
@@ -71,7 +60,16 @@ RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/biocorepipe
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
     mysql -u root -e 'CREATE DATABASE biocorepipe;' && \
     cat /var/www/html/biocorepipe/db/biocorepipe.sql|mysql -uroot biocorepipe && \
-    cd /var/www/html/biocorepipe/db && ./runUpdate biocorepipe
+    cd /var/www/html/biocorepipe/db && ./runUpdate biocorepipe && \
+    LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
+    service apache2 start && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin && \ 
+    zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -uroot
+
+RUN usermod -d /var/lib/mysql/ mysql
+
+RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php 
+RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf
 
 RUN apt-get -y autoremove
 
