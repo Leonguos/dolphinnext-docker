@@ -95,9 +95,9 @@ RUN curl -s https://get.nextflow.io | bash
 RUN mv /data/nextflow /usr/bin/.
 RUN chmod 755 /usr/bin/nextflow
                      
-RUN wget https://phar.phpunit.de/phpunit-5.6.0.phar
-RUN chmod +x phpunit-5.6.0.phar
-RUN mv phpunit-5.6.0.phar /usr/local/bin/phpunit
+RUN wget https://phar.phpunit.de/phpunit-7.0.2.phar
+RUN chmod +x phpunit-7.0.2.phar
+RUN mv phpunit-7.0.2.phar /usr/local/bin/phpunit
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
@@ -121,6 +121,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 RUN conda update -n base conda
 
-RUN conda install -y -c bioconda bowtie2 samtools
+RUN conda config --add channels bioconda
+RUN conda install -y -c bioconda tophat2
 
 
