@@ -50,8 +50,8 @@ RUN echo "locale-gen en_US.UTF-8"
 RUN echo "dpkg-reconfigure locales"
 
 # Install phpMyAdmin
-RUN LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin
-RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
+    find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     service apache2 start && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin && \ 
     zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -uroot
