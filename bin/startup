@@ -12,5 +12,8 @@ printf "[Dolphinnext]\nDB=biocorepipe\nDBUSER=root\nDBPASS=\nDBHOST=localhost\nD
 /usr/local/bin/user_add.sh
 
 find /var/lib/mysql -type f -exec touch {} \; && service mysql start 
+
+#Start ssh
+service ssh start
 # start Apache in Foreground, that is needed for Docker
 apache2 -D FOREGROUND & 
