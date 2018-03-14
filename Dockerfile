@@ -14,10 +14,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     libxml2-dev software-properties-common gdebi-core wget \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
                     libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev 
-                     
  
 RUN apt-get clean
-
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install python-software-properties 
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
@@ -48,7 +46,6 @@ RUN a2enconf fqdn
 
 RUN echo "locale-gen en_US.UTF-8"
 RUN echo "dpkg-reconfigure locales"
-
  
 # Copy site into place.
 ENV GITUSER=UMMS-Biocore
@@ -72,7 +69,6 @@ RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['
 RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf
 
 RUN apt-get -y autoremove
-
 
 # Install Java.
 RUN \
@@ -121,5 +117,4 @@ RUN conda update -n base conda
 
 RUN conda config --add channels bioconda
 RUN conda install -y -c bioconda tophat
-
 
