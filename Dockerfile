@@ -1,5 +1,5 @@
 FROM ubuntu:latest
- 
+RUN echo "alper" 
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
 
 RUN apt-get update
@@ -8,8 +8,7 @@ RUN apt-get dist-upgrade
  
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
-                    php-pear curl lynx-common lynx mysql-server \
-                    libreadline-dev libsqlite3-dev libbz2-dev libssl-dev python python-dev \
+                    curl mysql-server libreadline-dev libsqlite3-dev libbz2-dev libssl-dev python python-dev \
                     libmysqlclient-dev python-pip git expect default-jre \
                     libxml2-dev software-properties-common gdebi-core wget \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
@@ -59,9 +58,9 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     mysql -u root -e 'CREATE DATABASE biocorepipe;' && \
     cat /var/www/html/biocorepipe/db/biocorepipe.sql|mysql -uroot biocorepipe && \
     cd /var/www/html/biocorepipe/db && ./runUpdate biocorepipe && \
-    LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
+    #LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
     service apache2 start && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin && \ 
+    DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin php-mbstring php-gettext && \ 
     zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -uroot
 
 RUN usermod -d /var/lib/mysql/ mysql
