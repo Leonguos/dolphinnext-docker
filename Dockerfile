@@ -17,7 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
  
 RUN apt-get clean
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install python-software-properties 
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get -y install php7.2 
