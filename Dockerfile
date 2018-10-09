@@ -8,7 +8,7 @@ RUN apt-get dist-upgrade
  
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
-                    php-pear curl lynx-cur mysql-server \
+                    php-pear curl lynx-common lynx mysql-server \
                     libreadline-dev libsqlite3-dev libbz2-dev libssl-dev python python-dev \
                     libmysqlclient-dev python-pip git expect default-jre \
                     libxml2-dev software-properties-common gdebi-core wget \
@@ -49,6 +49,7 @@ RUN echo "dpkg-reconfigure locales"
  
 # Copy site into place.
 ENV GITUSER=UMMS-Biocore
+RUN echo ""
 ADD bin /usr/local/bin
 
 RUN git clone https://github.com/${GITUSER}/biocorepipe.git /var/www/html/biocorepipe
