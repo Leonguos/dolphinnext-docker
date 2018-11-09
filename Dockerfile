@@ -1,5 +1,4 @@
 FROM ubuntu:latest
-RUN echo "alper" 
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
 
 RUN apt-get update
@@ -51,7 +50,7 @@ ENV GITUSER=UMMS-Biocore
 RUN echo ""
 ADD bin /usr/local/bin
 
-RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolhinnext
+RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
 RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
