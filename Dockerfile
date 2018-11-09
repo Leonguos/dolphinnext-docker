@@ -51,13 +51,13 @@ ENV GITUSER=UMMS-Biocore
 RUN echo ""
 ADD bin /usr/local/bin
 
-RUN git clone https://github.com/${GITUSER}/biocorepipe.git /var/www/html/biocorepipe
-RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/biocorepipe
+RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolhinnext
+RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
-    mysql -u root -e 'CREATE DATABASE biocorepipe;' && \
-    cat /var/www/html/biocorepipe/db/biocorepipe.sql|mysql -uroot biocorepipe && \
-    cd /var/www/html/biocorepipe/db && ./runUpdate biocorepipe && \
+    mysql -u root -e 'CREATE DATABASE dolphinnext;' && \
+    cat /var/www/html/dolphinnext/db/dolphinnext.sql|mysql -uroot dolphinnext && \
+    cd /var/www/html/dolphinnext/db && ./runUpdate dolphinnext && \
     #LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
     service apache2 start && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin php-mbstring php-gettext && \ 
