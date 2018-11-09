@@ -39,6 +39,6 @@ startup
 
 4. Now, you can open your browser to access dolphinnext using the url below.
 
-http://localhost:8080/biocorepipe
+http://localhost:8080/dolphinnext
 
 
