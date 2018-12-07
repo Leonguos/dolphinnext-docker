@@ -45,7 +45,7 @@ if __name__ == "__main__":
         if not os.path.exists( GENOME_DATA_DIR ):
             subprocess.call('git clone https://github.com/UMMS-Biocore/dolphin-genome-data.git %s' % (GENOME_DATA_DIR), shell=True)
 
-      #For mysql db
+        #For mysql db
         if not os.path.exists( MYSQL_DATA_DIR_HOST ):
             subprocess.call('/usr/local/bin/mysqlstart', shell=True)
             dest_dir = os.path.dirname( MYSQL_DATA_DIR_HOST )
@@ -57,4 +57,9 @@ if __name__ == "__main__":
         new_data_directory = "%s" % MYSQL_DATA_DIR_HOST
         cmd = 'sed -i "s|datadir\t\t= .*|datadir\t\t= %s|g" %s' % (new_data_directory, MYSQL_CONF)
         subprocess.call(cmd, shell=True)
+
+        if not os.path.exists('/export/dolphinnext'):
+            subprocess.call('mv /var/www/html/dolphinnext /export/. && ln -s /export/dolphinnext /var/www/html/.', shell=True)
+        else:
+            subprocess.call('rm -rf /var/www/html/dolphinnext && ln -s /export/dolphinnext /var/www/html/.', shell=True)
 

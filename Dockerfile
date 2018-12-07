@@ -46,18 +46,9 @@ RUN echo "locale-gen en_US.UTF-8"
 RUN echo "dpkg-reconfigure locales"
  
 # Copy site into place.
-ENV GITUSER=UMMS-Biocore
-RUN echo ""
-ADD bin /usr/local/bin
-
-RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
-RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
+RUN apt-get update
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
-    mysql -u root -e 'CREATE DATABASE dolphinnext;' && \
-    cat /var/www/html/dolphinnext/db/dolphinnext.sql|mysql -uroot dolphinnext && \
-    cd /var/www/html/dolphinnext/db && ./runUpdate dolphinnext && \
-    #LC_ALL=C.UTF-8 add-apt-repository ppa:nijel/phpmyadmin && \
     service apache2 start && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin php-mbstring php-gettext && \ 
     zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -uroot
@@ -66,6 +57,8 @@ RUN usermod -d /var/lib/mysql/ mysql
 
 RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php 
 RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf
+
+RUN sed -i "s/|\s*\((count(\$analyzed_sql_results\['select_expr'\]\)/| (\1)/g" /usr/share/phpmyadmin/libraries/sql.lib.php
 
 RUN apt-get -y autoremove
 
@@ -115,6 +108,16 @@ ENV PATH /opt/conda/bin:$PATH
 RUN conda update -n base conda
 RUN conda config --add channels bioconda
 RUN conda install -y -c bioconda tophat
+
+ENV GITUSER=UMMS-Biocore
+RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
+RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
+
+RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \  
+    mysql -u root -e 'CREATE DATABASE dolphinnext;' && \
+    cat /var/www/html/dolphinnext/db/dolphinnext.sql|mysql -uroot dolphinnext && \
+    cd /var/www/html/dolphinnext/db && ./runUpdate dolphinnext
+ADD bin /usr/local/bin
 
 RUN echo "DONE!"
 
