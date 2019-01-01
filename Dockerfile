@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
-
+RUN echo "alper"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -11,7 +11,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     libmysqlclient-dev python-pip git expect default-jre \
                     libxml2-dev software-properties-common gdebi-core wget \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
-                    libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev 
+                    libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev \
+                    bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail php-ldap \
+                    git mercurial subversion
+
  
 RUN apt-get clean
 
@@ -87,10 +90,6 @@ RUN mv phpunit-7.0.2.phar /usr/local/bin/phpunit
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN apt-get update --fix-missing && apt-get install -y  bzip2 ca-certificates \
-    libglib2.0-0 libxext6 libsm6 libxrender1 \
-    git mercurial subversion
-
 RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.4.10-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
@@ -111,6 +110,9 @@ RUN conda install -y -c bioconda tophat
 
 ENV GITUSER=UMMS-Biocore
 RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
+
+RUN echo -e "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts
+
 RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \  
