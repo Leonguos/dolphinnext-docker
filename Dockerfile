@@ -1,6 +1,5 @@
 FROM ubuntu:latest
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
-RUN echo "alper"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -110,8 +109,6 @@ RUN conda install -y -c bioconda tophat
 
 ENV GITUSER=UMMS-Biocore
 RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
-
-RUN echo -e "$(hostname -i)\t$(hostname) $(hostname).localhost" >> /etc/hosts
 
 RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
 
