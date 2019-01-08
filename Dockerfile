@@ -16,13 +16,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
 
  
 RUN apt-get clean
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common
+RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt-get -y install php7.2 
-RUN apt-get -y install php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
-RUN apt-get install -y ssh openssh-server
+RUN apt-get -y install php7.2 opencpu-server rstudio-server ssh openssh-server \
+          php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
 
 # Enable apache mods.
 RUN a2enmod rewrite
@@ -48,7 +46,6 @@ RUN echo "locale-gen en_US.UTF-8"
 RUN echo "dpkg-reconfigure locales"
  
 # Copy site into place.
-RUN apt-get update
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
     service apache2 start && \
