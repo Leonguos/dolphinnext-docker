@@ -116,7 +116,7 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
 ADD bin /usr/local/bin
 
 RUN R -e 'install.packages(c("devtools", "knitr"))'
-RUN R -e 'opencpu::install_apps("umms-biocore/markdownapp")'
+RUN R -e 'devtools::install_github("umms-biocore/markdownapp")'
 
 
 RUN echo "DONE!"
