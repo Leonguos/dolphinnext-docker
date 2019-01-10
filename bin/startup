@@ -22,5 +22,9 @@ find /var/lib/mysql -type f -exec touch {} \; && service mysql start
 service ssh start
 #Sendmail service start
 /etc/init.d/sendmail restart 
+
+#rstudio-server start
+rstudio-server start
+
 # start Apache in Foreground, that is needed for Docker
 apache2 -D FOREGROUND & 
