@@ -120,6 +120,14 @@ RUN R -e 'devtools::install_github("umms-biocore/markdownapp")'
 RUN R -e 'webshot::install_phantomjs()'
 RUN mv /root/bin/phantomjs /usr/bin/.
 
+RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+RUN apt-get -y install libudunits2-dev
+
+RUN R -e 'if (!requireNamespace("BiocManager", quietly = TRUE))' \
+      -e 'install.packages("BiocManager")' \
+      -e 'BiocManager::install("debrowser", version = "3.8")'
+
+RUN git clone https://github.com/${GITUSER}/debrowser.git /export/debrowser
 
 RUN echo "DONE!"
 
