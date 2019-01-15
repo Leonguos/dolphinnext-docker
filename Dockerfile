@@ -125,7 +125,7 @@ RUN apt-get -y install libudunits2-dev pandoc libmariadb-client-lgpl-dev texlive
 
 RUN R -e 'if (!requireNamespace("BiocManager", quietly = TRUE))' \
       -e 'install.packages("BiocManager")' \
-      -e 'BiocManager::install(c("debrowser", "rmarkdown", "scran", "scater", "BiocStyle", "destiny", "mvoutlier"), version = "3.8")'
+      -e 'BiocManager::install(c("debrowser", "scran", "scater", "BiocStyle", "destiny", "mvoutlier"), version = "3.8")'
 
 RUN R -e 'library(devtools); install_github("garber-lab/SignallingSingleCell")'
 
