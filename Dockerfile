@@ -115,19 +115,21 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     cd /var/www/html/dolphinnext/db && ./runUpdate dolphinnext
 ADD bin /usr/local/bin
 
-RUN R -e 'install.packages(c("devtools", "knitr", "plotly", "webshot"))'
+RUN R -e 'install.packages(c("devtools", "knitr", "RCurl", "plotly", "webshot", "rmarkdown"))'
 RUN R -e 'devtools::install_github("umms-biocore/markdownapp")'
 RUN R -e 'webshot::install_phantomjs()'
 RUN mv /root/bin/phantomjs /usr/bin/.
 
 RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-RUN apt-get -y install libudunits2-dev
+RUN apt-get -y install libudunits2-dev pandoc libmariadb-client-lgpl-dev texlive texlive-latex-extra
 
 RUN R -e 'if (!requireNamespace("BiocManager", quietly = TRUE))' \
       -e 'install.packages("BiocManager")' \
-      -e 'BiocManager::install("debrowser", version = "3.8")'
+      -e 'BiocManager::install(c("debrowser", "rmarkdown", "scran", "scater", "BiocStyle", "destiny", "mvoutlier"), version = "3.8")'
 
-RUN git clone https://github.com/${GITUSER}/debrowser.git /export/debrowser
+RUN R -e 'library(devtools); install_github("garber-lab/SignallingSingleCell")'
+
+RUN git clone https://github.com/${GITUSER}/debrowser.git /data/debrowser
 
 RUN echo "DONE!"
 
