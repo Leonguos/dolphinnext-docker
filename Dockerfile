@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:xenial
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
 RUN apt-get update
 RUN apt-get -y upgrade
@@ -7,19 +7,19 @@ RUN apt-get dist-upgrade
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     curl mysql-server libreadline-dev libsqlite3-dev libbz2-dev libssl-dev python python-dev \
-                    libmysqlclient-dev python-pip git expect default-jre \
+                    libmysqlclient-dev python-pip git expect default-jre default-jdk \
                     libxml2-dev software-properties-common gdebi-core wget \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
                     libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev \
                     bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail php-ldap \
-                    git mercurial subversion
+                    git mercurial subversion ssh 
 
  
 RUN apt-get clean
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt-get -y install php7.2 opencpu-server rstudio-server ssh openssh-server \
+RUN apt-get -y install php7.2 openssh-server \
           php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
 
 # Enable apache mods.
@@ -61,17 +61,10 @@ RUN sed -i "s/|\s*\((count(\$analyzed_sql_results\['select_expr'\]\)/| (\1)/g" /
 
 RUN apt-get -y autoremove
 
-# Install Java.
-RUN \
-    apt-get -y install default-jre default-jdk
-
-
 # Define working directory.
 WORKDIR /data
 
-# Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-
+RUN echo "alper"
 RUN curl -s https://get.nextflow.io | bash 
 RUN mv /data/nextflow /usr/bin/.
 RUN chmod 755 /usr/bin/nextflow
@@ -81,24 +74,6 @@ RUN chmod +x phpunit-7.0.2.phar
 RUN mv phpunit-7.0.2.phar /usr/local/bin/phpunit
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-
-RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
-    wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.4.10-Linux-x86_64.sh -O ~/miniconda.sh && \
-    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh
-
-RUN apt-get install -y curl grep sed dpkg && \
-    TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
-    curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
-    dpkg -i tini.deb && \
-    rm tini.deb && \
-    apt-get clean
-
-ENV PATH /opt/conda/bin:$PATH
-
-RUN conda update -n base conda
-RUN conda config --add channels bioconda
-RUN conda install -y -c bioconda tophat
 
 ENV GITUSER=UMMS-Biocore
 RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
@@ -110,22 +85,6 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     cat /var/www/html/dolphinnext/db/dolphinnext.sql|mysql -uroot dolphinnext && \
     cd /var/www/html/dolphinnext/db && ./runUpdate dolphinnext
 ADD bin /usr/local/bin
-
-RUN R -e 'install.packages(c("devtools", "knitr", "RCurl", "plotly", "webshot", "rmarkdown"))'
-RUN R -e 'devtools::install_github("umms-biocore/markdownapp")'
-RUN R -e 'webshot::install_phantomjs()'
-RUN mv /root/bin/phantomjs /usr/bin/.
-
-RUN add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-RUN apt-get -y install libudunits2-dev pandoc libmariadb-client-lgpl-dev texlive texlive-latex-extra
-
-RUN R -e 'if (!requireNamespace("BiocManager", quietly = TRUE))' \
-      -e 'install.packages("BiocManager")' \
-      -e 'BiocManager::install(c("debrowser", "scran", "scater", "BiocStyle", "destiny", "mvoutlier"), version = "3.8")'
-
-RUN R -e 'library(devtools); install_github("garber-lab/SignallingSingleCell")'
-
-RUN git clone https://github.com/${GITUSER}/debrowser.git /data/debrowser
 
 RUN echo "DONE!"
 
