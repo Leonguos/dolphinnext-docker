@@ -11,7 +11,7 @@ chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /export/.dolphinnext
 
    echo -e "$(hostname -i)    $(hostname).localdomain   $(hostname)" >> /etc/hosts
 if [ ! -f /var/www/html/dolphinnext/config/.sec ]; then
-   printf "[Dolphinnext]\nDB=dolphinnext\nDBUSER=docker\nDBPASS=docker\nDBHOST=localhost\nDBPORT=3306\nSSHPATH=/export/.dolphinnext/.ssh\nAMAZON=z76fg0iua298gh4\nAMZPATH=/export/.dolphinnext/.amz\nSALT=23fg7r3\nPEPPER=3d5f1s8\nMASTER=u7ygvc2\nVERIFY=2s8f5h\n[CONFIG]\nTIMEZONE=America/New_York\nRUNPATH=../tmp/logs\nTEMPPATH=../tmp\nAPI_PATH=https://dolphinnext.umassmed.edu\nBASE_PATH=http://localhost:8080/dolphinnext\nLDAP_SERVER=test\nDN_STRING=test\nBIND_USER= SVCLinuxLDAPAuth\nBIND_PASS=test\nEMAIL_SENDER=test@test.edu\nEMAIL_ADMIN=test@test.edu\n[UICONFIG]\nSHOW_AMAZON_KEYS=true\nSHOW_SSH_KEYS=true\nSHOW_GROUPS=true\nCOMPANY_NAME=Biocore\nALLOW_SIGNUP=true\nALLOW_SIGNUPGOOGLE=true" > /var/www/html/dolphinnext/config/.sec
+   printf "[Dolphinnext]\nDB=dolphinnext\nDBUSER=docker\nDBPASS=docker\nDBHOST=localhost\nDBPORT=3306\nSSHPATH=/export/.dolphinnext/.ssh\nAMAZON=z76fg0iua298gh4\nAMZPATH=/export/.dolphinnext/.amz\nSALT=23fg7r3\nPEPPER=3d5f1s8\nMASTER=u7ygvc2\nVERIFY=2s8f5h\n\n[CONFIG]\nTIMEZONE=America/New_York\nRUNPATH=../tmp/pub\nTEMPPATH=../tmp\nAPI_PATH=https://dolphinnext.umassmed.edu\nBASE_PATH=http://localhost:8080/dolphinnext\nOCPU_URL=http://localhost\nPUBWEB_URL=http://localhost:8080/dolphinnext/tmp/pub\nOCPU_PUBWEB_URL=http://localhost/dolphinnext/tmp/pub\nLDAP_SERVER=test\nDN_STRING=test\nBIND_USER= SVCLinuxLDAPAuth\nBIND_PASS=test\nEMAIL_SENDER=test@test.edu\nEMAIL_ADMIN=test@test.edu\n\n[UICONFIG]\nSHOW_AMAZON_KEYS=true\nSHOW_SSH_KEYS=true\nSHOW_GROUPS=true\nCOMPANY_NAME=Biocore\nALLOW_SIGNUP=true\nALLOW_SIGNUPGOOGLE=true" > /var/www/html/dolphinnext/config/.sec
 fi
 
 /usr/local/bin/user_add.sh
@@ -22,9 +22,6 @@ find /var/lib/mysql -type f -exec touch {} \; && service mysql start
 service ssh start
 #Sendmail service start
 /etc/init.d/sendmail restart 
-
-#rstudio-server start
-rstudio-server start
 
 # start Apache in Foreground, that is needed for Docker
 apache2 -D FOREGROUND & 
