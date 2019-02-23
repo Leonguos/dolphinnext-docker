@@ -1,5 +1,6 @@
 FROM ubuntu:xenial
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
+RUN echo "alper"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -11,16 +12,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     libxml2-dev software-properties-common gdebi-core wget \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
                     libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev \
-                    bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail php-ldap \
-                    git mercurial subversion ssh 
+                    bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail \
+                    git mercurial subversion 
 
  
 RUN apt-get clean
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt-get -y install php7.2 openssh-server \
-          php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql php7.2-xml
+RUN apt-get -y install php7.2 ssh openssh-server \
+    php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql \ 
+    php7.2-xml php7.2-ldap
 
 # Enable apache mods.
 RUN a2enmod rewrite
