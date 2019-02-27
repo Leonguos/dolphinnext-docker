@@ -87,17 +87,16 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     cd /var/www/html/dolphinnext/db && ./runUpdate dolphinnext
 ADD bin /usr/local/bin
 
-cd ~
-/bin/bash
-perl -MNet::FTP -e \
-    '$ftp = new Net::FTP("ftp.ncbi.nlm.nih.gov", Passive => 1);
+RUN cd ~ \
+RUN perl -MNet::FTP -e \
+    '$ftp = new Net::FTP("ftp.ncbi.nlm.nih.gov", Passive => 1); \
     $ftp->login; $ftp->binary;
     $ftp->get("/entrez/entrezdirect/edirect.tar.gz");'
-gunzip -c edirect.tar.gz | tar xf -
-rm edirect.tar.gz
-builtin exit
-export PATH=$PATH:$HOME/edirect >& /dev/null || setenv PATH "${PATH}:$HOME/edirect"
-./edirect/setup.sh
+RUN gunzip -c edirect.tar.gz | tar xf -
+RUN rm edirect.tar.gz
+RUN builtin exit
+RUN export PATH=$PATH:$HOME/edirect >& /dev/null || setenv PATH "${PATH}:$HOME/edirect"
+RUN ./edirect/setup.sh
 
 RUN echo "DONE!"
 
