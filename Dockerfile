@@ -88,10 +88,7 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
 ADD bin /usr/local/bin
 
 RUN cd ~ \
-RUN perl -MNet::FTP -e \
-    '$ftp = new Net::FTP("ftp.ncbi.nlm.nih.gov", Passive => 1); \
-    $ftp->login; $ftp->binary;
-    $ftp->get("/entrez/entrezdirect/edirect.tar.gz");'
+RUN perl -MNet::FTP -e '$ftp = new Net::FTP("ftp.ncbi.nlm.nih.gov", Passive => 1); $ftp->login; $ftp->binary; $ftp->get("/entrez/entrezdirect/edirect.tar.gz");'
 RUN gunzip -c edirect.tar.gz | tar xf -
 RUN rm edirect.tar.gz
 RUN builtin exit
