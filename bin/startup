@@ -17,8 +17,8 @@ fi
 /usr/local/bin/user_add.sh
 
 find /var/lib/mysql -type f -exec touch {} \; && service mysql start 
-echo "export PATH=\$PATH:\$HOME/edirect" >> $HOME/.bash_profile
-
+echo "export PATH=\$PATH:/usr/local/share/edirect" >> ~/.bash_profile
+source ~/.bash_profile
 #Start ssh
 service ssh start
 #Sendmail service start
