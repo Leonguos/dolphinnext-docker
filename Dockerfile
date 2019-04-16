@@ -90,7 +90,7 @@ RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect
     tar xvfz edirect.tar.gz && \
     rm edirect.tar.gz && \
     cd edirect && ./setup.sh
-RUN echo "export PATH=\$PATH:/usr/local/share/edirect" >> /var/www/.bashrc
+RUN mv /usr/local/share/edirect/* /usr/local/sbin/.
 ADD bin /usr/local/bin
 
 RUN echo "DONE!"
