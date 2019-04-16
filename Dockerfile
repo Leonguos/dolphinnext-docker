@@ -65,7 +65,6 @@ RUN apt-get -y autoremove
 # Define working directory.
 WORKDIR /data
 
-RUN echo "alper"
 RUN curl -s https://get.nextflow.io | bash 
 RUN mv /data/nextflow /usr/bin/.
 RUN chmod 755 /usr/bin/nextflow
