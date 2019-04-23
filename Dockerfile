@@ -15,8 +15,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     git mercurial subversion 
 
 
-RUN pip install --upgrade pip 
-RUN pip install simple-crypt
 RUN apt-get clean
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
@@ -70,6 +68,8 @@ WORKDIR /data
 RUN curl -s https://get.nextflow.io | bash 
 RUN mv /data/nextflow /usr/bin/.
 RUN chmod 755 /usr/bin/nextflow
+RUN mkdir /.nextflow
+RUN chmod 777 /.nextflow
                      
 RUN wget https://phar.phpunit.de/phpunit-7.0.2.phar
 RUN chmod +x phpunit-7.0.2.phar

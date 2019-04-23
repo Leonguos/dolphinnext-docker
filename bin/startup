@@ -24,3 +24,7 @@ service ssh start
 
 # start Apache in Foreground, that is needed for Docker
 apache2 -D FOREGROUND & 
+
+#start cron service
+crontab /usr/local/bin/dolphinnext-cron
+service cron start 
