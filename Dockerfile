@@ -14,7 +14,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail \
                     git mercurial subversion 
 
- 
+
+RUN pip install --upgrade pip 
+RUN pip install simple-crypt
 RUN apt-get clean
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
