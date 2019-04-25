@@ -1,0 +1,2 @@
+*/10 * * * * cd /var/www/html/dolphinnext/scripts && python callapi.py >> log.txt 2>&1
+
