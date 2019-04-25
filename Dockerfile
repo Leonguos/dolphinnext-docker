@@ -1,5 +1,6 @@
 FROM ubuntu:xenial
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
+RUN echo "d"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -16,6 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
 
 
 RUN apt-get clean
+RUN pip install simple-crypt
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
