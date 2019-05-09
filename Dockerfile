@@ -1,6 +1,5 @@
 FROM ubuntu:xenial
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
-RUN echo "d"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -23,7 +22,7 @@ RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get -y install php7.2 ssh openssh-server \
     php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql \ 
-    php7.2-xml php7.2-ldap
+    php7.2-xml php7.2-ldap s3cmd
 
 # Enable apache mods.
 RUN a2enmod rewrite
@@ -95,6 +94,7 @@ RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect
     cd edirect && ./setup.sh
 RUN mv /usr/local/share/edirect/* /usr/local/sbin/.
 ADD bin /usr/local/bin
+
 
 RUN echo "DONE!"
 
