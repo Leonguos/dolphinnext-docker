@@ -34,7 +34,11 @@ docker run -m 10G -p 8080:80 -v /mnt/sda1/export:/export -ti dolphinnext-docker 
 
 *if you want to run a pre-build
 
-docker run -m 10G -p 8080:80 -v /mnt/sda1/export:/export -ti nephantes/dolphinnext-docker /bin/bash
+docker run -m 10G -p 8080:80 -v /mnt/sda1/export:/export -ti ummsbiocore/dolphinnext-docker /bin/bash
+
+or with R markdown support;
+
+docker run -m 10G -p 8080:80 -v /mnt/sda1/export:/export -ti ummsbiocore/dolphinnext-studio /bin/bash
 
 3. After you start the container, you need to start the mysql and apache server usign the command below;
 
