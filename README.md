@@ -1,7 +1,10 @@
 DolphinNext docker version
 ========
+DolphinNext original repository is located at https://github.com/UMMS-Biocore/dolphinnext.
 
-dolphinnext can be run standalone using a docker container.
+For a quick start please check our quick start guide. https://dolphinnext.readthedocs.io/en/latest/dolphinNext/quick.html
+
+DolphinNext can also be run as a standalone application using a docker container.
 First docker image need to be build unless you want to use prebuild from dockerhub. So, any change in the Dockerfile requires to build the image. But if you want to use prebuild version just skip building it and start the container.
 
 Build docker image
