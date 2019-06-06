@@ -1,5 +1,6 @@
 FROM ubuntu:xenial
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
+RUN echo "start"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -12,7 +13,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
                     libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev \
                     bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail \
-                    git mercurial subversion 
+                    git mercurial subversion libarchive-dev
 
 
 RUN apt-get clean
@@ -95,6 +96,11 @@ RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect
 RUN mv /usr/local/share/edirect/* /usr/local/sbin/.
 ADD bin /usr/local/bin
 
+RUN cd /usr/local/share && wget https://github.com/singularityware/singularity/releases/download/2.5.2/singularity-2.5.2.tar.gz && \
+    tar xvf singularity-2.5.2.tar.gz && \
+    cd singularity-2.5.2 && \
+    ./configure --prefix=/usr/local && \
+    make && make install
 
 RUN echo "DONE!"
 
