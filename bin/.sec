@@ -1,0 +1,62 @@
+; This is the main DolphinNext configuration file. It contains the
+; configuration directives.
+;
+; PUBWEB_URL: url to reach public web directory (eg. http://localhost:8080/dolphinnext/tmp/pub for localhost)
+; OCPU_URL: url to reach local ocpu server (eg. http://localhost for localhost in which http://localhost/ocpu exist in the server)
+; OCPU_PUBWEB_URL: url to reach local pubweb directory (eg. http://localhost/dolphinnext/tmp/pub for localhost) 
+
+
+[Dolphinnext]
+DB=dolphinnext
+DBUSER=docker
+DBPASS=docker
+DBHOST=localhost
+DBPORT=3306
+SSHPATH=/export/.dolphinnext/.ssh
+AMAZON=z76fg0iua298gh4
+AMZPATH=/export/.dolphinnext/.amz
+SALT=23fg7r3
+PEPPER=3d5f1s8
+MASTER=u7ygvc2
+VERIFY=2s8f5h
+
+[CONFIG]
+TIMEZONE=America/New_York
+RUNPATH=../tmp/pub
+TEMPPATH=../tmp
+CENTRAL_API_URL=https://www.dolphinnext.com
+API_URL = http://localhost/dolphinnext
+BASE_PATH = http://localhost:8080/dolphinnext
+PUBWEB_URL = http://localhost:8080/dolphinnext/tmp/pub
+OCPU_URL = http://localhost
+DEBROWSER_URL = http://localhost
+OCPU_PUBWEB_URL = http://localhost/dolphinnext/tmp/pub
+NEXTFLOW_VERSION = 0.30.0
+LDAP_SERVER=test
+DN_STRING=test
+BIND_USER= SVCLinuxLDAPAuth
+BIND_PASS=test
+EMAIL_SENDER=test@test.edu
+EMAIL_ADMIN=test@test.edu
+
+[UICONFIG]
+COMPANY_NAME=Test Server
+ALLOW_SIGNUP=true
+ALLOW_SIGNUPGOOGLE=true
+; User Preferences for profile page 
+SHOW_AMAZON_KEYS=true
+SHOW_SSH_KEYS=true
+SHOW_GROUPS=true
+; User Preferences for log tab in run page
+; Note: Set SHOW_RUN_NEXTFLOWLOG as false to hide amazon keys.
+SHOW_RUN_LOG=true
+SHOW_RUN_TIMELINE=true
+SHOW_RUN_REPORT=true
+SHOW_RUN_DAG=true
+SHOW_RUN_TRACE=true
+SHOW_RUN_NEXTFLOWLOG=true  
+SHOW_RUN_NEXTFLOWNF=true
+SHOW_RUN_NEXTFLOWCONFIG=true
+
+
+

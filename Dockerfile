@@ -1,5 +1,6 @@
 FROM ubuntu:xenial
 MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
+RUN echo "start"
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade
@@ -12,16 +13,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
                     libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev \
                     bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail \
-                    git mercurial subversion 
+                    git mercurial subversion libarchive-dev
 
- 
+
 RUN apt-get clean
+RUN pip install simple-crypt
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
 RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get -y install php7.2 ssh openssh-server \
     php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql \ 
-    php7.2-xml php7.2-ldap
+    php7.2-xml php7.2-ldap s3cmd
 
 # Enable apache mods.
 RUN a2enmod rewrite
@@ -65,10 +67,11 @@ RUN apt-get -y autoremove
 # Define working directory.
 WORKDIR /data
 
-RUN echo "alper"
 RUN curl -s https://get.nextflow.io | bash 
 RUN mv /data/nextflow /usr/bin/.
 RUN chmod 755 /usr/bin/nextflow
+RUN mkdir /.nextflow
+RUN chmod 777 /.nextflow
                      
 RUN wget https://phar.phpunit.de/phpunit-7.0.2.phar
 RUN chmod +x phpunit-7.0.2.phar
@@ -90,8 +93,14 @@ RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect
     tar xvfz edirect.tar.gz && \
     rm edirect.tar.gz && \
     cd edirect && ./setup.sh
-RUN echo "export PATH=\$PATH:/usr/local/share/edirect" >> ~/.bashrc
+RUN mv /usr/local/share/edirect/* /usr/local/sbin/.
 ADD bin /usr/local/bin
+
+RUN cd /usr/local/share && wget https://github.com/singularityware/singularity/releases/download/2.5.2/singularity-2.5.2.tar.gz && \
+    tar xvf singularity-2.5.2.tar.gz && \
+    cd singularity-2.5.2 && \
+    ./configure --prefix=/usr/local && \
+    make && make install
 
 RUN echo "DONE!"
 
