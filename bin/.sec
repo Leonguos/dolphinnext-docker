@@ -2,8 +2,12 @@
 ; configuration directives.
 ;
 ; PUBWEB_URL: url to reach public web directory (eg. http://localhost:8080/dolphinnext/tmp/pub for localhost)
+; RUNPATH, PUBWEB_URL and OCPU_PUBWEB_URL should end with same directory structure
 ; OCPU_URL: url to reach local ocpu server (eg. http://localhost for localhost in which http://localhost/ocpu exist in the server)
 ; OCPU_PUBWEB_URL: url to reach local pubweb directory (eg. http://localhost/dolphinnext/tmp/pub for localhost) 
+; API_URL must be http://localhost/dolphinnext in docker, since this url will be used to execute commands inside of the docker
+; CENTRAL_API_URL is central database where uuid's for process and pipeline stored.
+
 
 
 [Dolphinnext]
