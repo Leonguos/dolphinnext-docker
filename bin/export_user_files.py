@@ -7,8 +7,6 @@ MYSQL_CONF = '/etc/mysql/mysql.conf.d/mysqld.cnf'
 MYSQL_DATA_DIR_DEFAULT = "/var/lib/mysql"
 MYSQL_DATA_DIR_HOST = "/export/mysql/"
 
-GENOME_DATA_DIR = "/export/genome_data"
-
 def change_path( src ):
     """
         src will be copied to /export/`src` and a symlink will be placed in src pointing to /export/
@@ -42,9 +40,6 @@ def change_path( src ):
 if __name__ == "__main__":
 
     if os.path.exists('/export/'):
-        if not os.path.exists( GENOME_DATA_DIR ):
-            subprocess.call('git clone https://github.com/UMMS-Biocore/dolphin-genome-data.git %s' % (GENOME_DATA_DIR), shell=True)
-
         #For mysql db
         if not os.path.exists( MYSQL_DATA_DIR_HOST ):
             subprocess.call('/usr/local/bin/mysqlstart', shell=True)
