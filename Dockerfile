@@ -13,7 +13,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     tree vim libv8-dev subversion g++ gcc gfortran zlib1g-dev libreadline-dev \
                     libx11-dev xorg-dev libbz2-dev liblzma-dev libpcre3-dev libcurl4-openssl-dev \
                     bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 sendmail \
-                    git mercurial subversion libarchive-dev
+                    mercurial subversion libarchive-dev uuid-dev squashfs-tools build-essential \
+                    libgpgme11-dev libseccomp-dev pkg-config 
 
 
 RUN apt-get clean
@@ -94,13 +95,17 @@ RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect
     rm edirect.tar.gz && \
     cd edirect && ./setup.sh
 RUN mv /usr/local/share/edirect/* /usr/local/sbin/.
+
+RUN wget https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.12.7.linux-amd64.tar.gz && \
+    export PATH=$PATH:/usr/local/go/bin && \
+    export VERSION=3.2.1 && \ 
+    wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz && \
+    tar -xzf singularity-${VERSION}.tar.gz && \ 
+    cd singularity && ./mconfig && make -C ./builddir && sudo make -C ./builddir install
+
 ADD bin /usr/local/bin
 
-RUN cd /usr/local/share && wget https://github.com/singularityware/singularity/releases/download/2.5.2/singularity-2.5.2.tar.gz && \
-    tar xvf singularity-2.5.2.tar.gz && \
-    cd singularity-2.5.2 && \
-    ./configure --prefix=/usr/local && \
-    make && make install
 
 RUN echo "DONE!"
 
