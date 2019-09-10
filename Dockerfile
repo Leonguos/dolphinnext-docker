@@ -102,7 +102,7 @@ RUN wget https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz && \
     export VERSION=3.2.1 && \ 
     wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz && \
     tar -xzf singularity-${VERSION}.tar.gz && \ 
-    cd singularity && ./mconfig && make -C ./builddir && sudo make -C ./builddir install
+    cd singularity && ./mconfig && make -C ./builddir && make -C ./builddir install
 
 ADD bin /usr/local/bin
 
